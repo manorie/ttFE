@@ -1,0 +1,15 @@
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducer from './rootReducer';
+
+const middleware = [thunk];
+
+/* eslint-disable */
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(...middleware),
+);
+/* eslint-enable */
+
+export default store;
