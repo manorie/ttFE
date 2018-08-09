@@ -7,9 +7,7 @@ import store from './store';
 
 const App = () => (
   <Provider store={store}>
-    <h1>
-      <Routes />
-    </h1>
+    <Routes />
   </Provider>
 );
 
