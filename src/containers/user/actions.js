@@ -1,11 +1,17 @@
 import { post } from 'axios';
 import * as typ from '../../constants/actionTypes';
 
+const onUserLogout = () => (dispatch) => {
+  dispatch({
+    type: typ.USER_LOG_OUT,
+  });
+};
+
 const onUserLogin = ({ email, password }) => (dispatch) => {
   dispatch({
     type: typ.USER_LOGIN_ERROR_SET,
     payload: {
-      loginError: '',
+      error: '',
     },
   });
 
@@ -58,4 +64,5 @@ const onUserLogin = ({ email, password }) => (dispatch) => {
 
 module.exports = {
   onUserLogin,
+  onUserLogout,
 };

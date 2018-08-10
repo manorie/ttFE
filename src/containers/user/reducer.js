@@ -28,6 +28,12 @@ const user = (state = {
         loginError: action.payload.error,
       };
     }
+    case typ.USER_LOG_OUT: {
+      return {
+        ...state,
+        token: '',
+      };
+    }
     default:
       return state;
   }

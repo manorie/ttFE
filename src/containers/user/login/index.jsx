@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -18,6 +18,13 @@ class Login extends React.Component {
       email,
       password: '',
     };
+  }
+
+  componentDidMount() {
+    const {
+      logout,
+    } = this.props;
+    logout();
   }
 
   onEmailChange = ({ target: { value } }) => {
@@ -42,7 +49,9 @@ class Login extends React.Component {
 
   render() {
     const { email, password } = this.state;
-    const { name, loggingIn, loginError } = this.props;
+    const {
+      name, loggingIn, loginError, token,
+    } = this.props;
 
     const greeting = name ? (
       <h1>
@@ -59,6 +68,10 @@ class Login extends React.Component {
           <p>
             {loginError}
           </p>
+        ) : undefined }
+
+        { token ? (
+          <Redirect to="/" />
         ) : undefined }
 
         <form onSubmit={this.onSubmit}>
@@ -103,7 +116,9 @@ class Login extends React.Component {
 Login.propTypes = {
   name: PropTypes.string,
   email: PropTypes.string,
+  token: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
   loggingIn: PropTypes.bool.isRequired,
   loginError: PropTypes.string.isRequired,
 };
@@ -131,6 +146,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   login: actions.onUserLogin,
+  logout: actions.onUserLogout,
 }, dispatch);
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Login);
