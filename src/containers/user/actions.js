@@ -7,6 +7,17 @@ const onUserLogout = () => (dispatch) => {
   });
 };
 
+const setUserFromCookie = ({ name, email, token }) => (dispatch) => {
+  dispatch({
+    type: typ.USER_LOGIN_SUCCESS,
+    payload: {
+      name,
+      email,
+      token,
+    },
+  });
+};
+
 const onUserLogin = ({ email, password }) => (dispatch) => {
   dispatch({
     type: typ.USER_LOGIN_ERROR_SET,
@@ -65,4 +76,5 @@ const onUserLogin = ({ email, password }) => (dispatch) => {
 module.exports = {
   onUserLogin,
   onUserLogout,
+  setUserFromCookie,
 };

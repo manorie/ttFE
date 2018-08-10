@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import NotFound from './containers/not-found';
+import NotFound from './containers/notFound';
 import Login from './containers/user/login';
 // import Register from './containers/user/register';
 import Dashboard from './containers/dashboard';
