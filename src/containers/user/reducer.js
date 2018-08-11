@@ -3,6 +3,8 @@ import * as typ from '../../constants/actionTypes';
 const user = (state = {
   loggingIn: false,
   loginError: '',
+  registering: false,
+  registerError: '',
   name: '',
   email: '',
   token: '',

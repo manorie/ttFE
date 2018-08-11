@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import actions from '../user/actions';
 
-class CookieSync extends React.Component {
+class CookieSync extends React.PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
@@ -15,37 +15,31 @@ class CookieSync extends React.Component {
     children: PropTypes.element.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-
-    const {
-      cookies, name, email, token, setUserFromCookie,
-    } = props;
-    const { uToken, uName, uEmail } = cookies.get('user') || {};
-
-    if (uToken && uName && uEmail) {
-      if (!token && !name && !email) {
-        setUserFromCookie(
-          {
-            name: uName || '',
-            email: uEmail || '',
-            token: uToken || '',
-          },
-        );
-      }
-    }
-
-    if (token !== uToken && name !== uName && email !== uEmail) {
-      cookies.set('user', {
-        uName: name,
-        uEmail: email,
-        uToken: token,
-      });
-    }
-  }
-
   render() {
     const { children } = this.props;
+
+    const {
+      cookies,
+      name,
+      email,
+      token,
+      setUserFromCookie,
+    } = this.props;
+    const { uToken, uName, uEmail } = cookies.get('user') || {};
+
+    if (token && !uToken) {
+      cookies.set('user', {
+        uToken: token,
+        uName: name,
+        uEmail: email,
+      });
+    } else if (uToken && !token) {
+      setUserFromCookie({
+        name: uName,
+        email: uEmail,
+        token: uToken,
+      });
+    }
 
     return (
       <div>

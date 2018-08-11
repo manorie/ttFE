@@ -1,11 +1,12 @@
 import React from 'react';
+import PrivateRoute from '../privateRoute';
 
 const NotFound = () => (
-  <div>
+  <PrivateRoute>
     <h1>
       Dashboard
     </h1>
-  </div>
+  </PrivateRoute>
 );
 
 module.exports = NotFound;

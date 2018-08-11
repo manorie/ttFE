@@ -5,18 +5,15 @@ import { bindActionCreators } from 'redux';
 import { withCookies, Cookies } from 'react-cookie';
 import PropTypes from 'prop-types';
 import actions from '../actions';
-import st from './login.styl';
+import st from './register.styl';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    const {
-      email,
-    } = props;
-
     this.state = {
-      email,
+      name: '',
+      email: '',
       password: '',
     };
   }
@@ -35,6 +32,12 @@ class Login extends React.Component {
     });
   }
 
+  onNameChange = ({ target: { value } }) => {
+    this.setState({
+      name: value,
+    });
+  }
+
   onEmailChange = ({ target: { value } }) => {
     this.setState({
       email: value,
@@ -49,32 +52,24 @@ class Login extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { login } = this.props;
-    const { email, password } = this.state;
+    const { register } = this.props;
+    const { name, email, password } = this.state;
 
-    login({ email, password });
+    register({ name, email, password });
   }
 
   render() {
-    const { email, password } = this.state;
+    const { name, email, password } = this.state;
     const {
-      name, loggingIn, loginError, token,
+      registering, registerError, token,
     } = this.props;
 
-    const greeting = name ? (
-      <h1>
-        Hello
-        {name}
-      </h1>
-    ) : undefined;
 
     return (
       <div className={st.container}>
-        { greeting }
-
-        { loginError ? (
+        { registerError ? (
           <p>
-            {loginError}
+            {registerError}
           </p>
         ) : undefined }
 
@@ -83,6 +78,16 @@ class Login extends React.Component {
         ) : undefined }
 
         <form onSubmit={this.onSubmit}>
+          <label htmlFor={name}>
+            name
+            <input
+              value={name}
+              onChange={this.onNameChange}
+            />
+          </label>
+
+          <br />
+
           <label htmlFor={email}>
             email
             <input
@@ -108,13 +113,14 @@ class Login extends React.Component {
           <input
             type="submit"
             disabled={
-              email.length < 3 || password.length < 6 || loggingIn
+              name.length < 3 || email.length < 3
+                || password.length < 6 || registering
             }
           />
         </form>
 
-        <Link to="/">
-          Click here to go to your dashboard.
+        <Link to="/login">
+          Click here to go to your login.
         </Link>
       </div>
     );
@@ -122,39 +128,28 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  name: PropTypes.string,
-  email: PropTypes.string,
   token: PropTypes.string.isRequired,
-  login: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
-  loggingIn: PropTypes.bool.isRequired,
-  loginError: PropTypes.string.isRequired,
+  registering: PropTypes.bool.isRequired,
+  registerError: PropTypes.string.isRequired,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
-};
-
-Login.defaultProps = {
-  name: '',
-  email: '',
 };
 
 const mapStateToProps = ({
   user: {
-    name,
-    email,
     token,
-    loggingIn,
-    loginError,
+    registering,
+    registerError,
   },
 }) => ({
-  name,
-  email,
   token,
-  loggingIn,
-  loginError,
+  registering,
+  registerError,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  login: actions.onUserLogin,
+  register: actions.onUserLogin,
   logout: actions.onUserLogout,
 }, dispatch);
 
